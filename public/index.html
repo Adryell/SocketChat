@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Chat Duozada</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"> </script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <form id="chat">
+        <input type="text" name="username" placeholder="Digite seu usuário">
+        <div class="messages"></div>
+        <input type="text" name="message" placeholder="Digite sua mensagem">
+
+        <button type="sumbit">Enviar</button>
+    </form>
+
+    
+
+    <script type="text/javascript">
+        var socket = io('http://localhost:3000');
+
+        function renderMessage(message) {
+            $('.message').append('<div class="message"> <strong>'+ message.author +'</strong>: '+ message.message +'</div>')
+        }
+
+        socket.on('previousMessage', function(message) {
+            for (message of messages) {
+                renderMessage(message);
+            }
+        });
+
+        socket.on('receivedMessage', function(message) {
+            renderMessage(message);
+        });
+
+        $('#chat').submit(function(event) {
+            event.preventDefault();
+
+            var author = $('input[name=username]').val();
+            var message = $('input[name=username]').val();
+
+            if (author.length && message.length) {
+                var messageObject = {
+                    author: author,
+                    message: message,
+                };
+
+                renderMessage(messageObject);
+
+                socket.emit('sendMessage', messageObject);
+            }
+        });
+    </script>
+
+        
+</body>
+
+</html>
