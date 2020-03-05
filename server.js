@@ -22,7 +22,7 @@ io.on('connection', socket => {
     socket.emit('previousMessages', messages);
 
     socket.on('sendMessage', data => {
-        messages.psuh(data);
+        messages.push(data);
         socket.broadcast.emit('receivedMessage', data);
     });
 });

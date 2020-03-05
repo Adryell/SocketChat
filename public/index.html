@@ -32,10 +32,10 @@
         var socket = io('http://localhost:3000');
 
         function renderMessage(message) {
-            $('.message').append('<div class="message"> <strong>'+ message.author +'</strong>: '+ message.message +'</div>')
+            $('.messages').append('<div class="message"> <strong>'+ message.author +'</strong>: '+ message.message +'</div>');
         }
 
-        socket.on('previousMessage', function(message) {
+        socket.on('previousMessages', function(messages) {
             for (message of messages) {
                 renderMessage(message);
             }
@@ -49,7 +49,7 @@
             event.preventDefault();
 
             var author = $('input[name=username]').val();
-            var message = $('input[name=username]').val();
+            var message = $('input[name=message]').val();
 
             if (author.length && message.length) {
                 var messageObject = {
@@ -63,7 +63,6 @@
             }
         });
     </script>
-
         
 </body>
 
